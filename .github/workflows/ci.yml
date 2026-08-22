@@ -1,0 +1,57 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "Cargo.*"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "Cargo.*"
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+      - uses: taiki-e/install-action@v2.85.11
+        with:
+          tool: cargo-deny,cargo-hack
+      - name: Run cargo check
+        run: |
+          cargo deny --all-features --log-level error check
+          cargo hack check --feature-powerset --no-dev-deps
+
+  lints:
+    name: Lints
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Run cargo clippy
+        run: cargo clippy -- -D warnings
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-24.04
+    needs:
+      - check
+      - lints
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Run cargo test
+        run: cargo test --all-features --all-targets -- --nocapture
