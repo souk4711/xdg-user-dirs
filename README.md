@@ -5,7 +5,6 @@ A library that looks up the current path for one of the XDG user directories.
 ## Usage
 
 ```rust
-
 ```
 
 ## License

@@ -12,3 +12,4 @@ readme = "README.md"
 edition = "2024"
 
 [dependencies]
+thiserror = "2.0.20"
