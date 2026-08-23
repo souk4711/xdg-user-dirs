@@ -79,6 +79,6 @@ mod dirs_test {
             env!("CARGO_MANIFEST_DIR"),
             "/tests/fixtures/user-dirs.dirs.filenotexist"
         ));
-        assert!(!dirs.is_ok());
+        assert!(dirs.is_ok());
     }
 }

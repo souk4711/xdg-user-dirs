@@ -15,6 +15,7 @@ impl Dirs {
         Self::from_file_imp::<PathBuf>(None)
     }
 
+    #[doc(hidden)]
     pub fn from_file<P: AsRef<Path>>(filepath: P) -> Result<Self> {
         Self::from_file_imp(Some(filepath))
     }
@@ -38,15 +39,19 @@ impl Dirs {
             ("XDG_VIDEOS_DIR".to_string(), format!("{h}/Videos")),
         ]);
 
-        let filepath = match filepath {
-            Some(filepath) => filepath.as_ref().into(),
+        let filepath_dirsfile = match filepath {
+            Some(ref path) => path.as_ref().into(),
             None => match env::var_os("XDG_CONFIG_HOME") {
                 Some(dir) => PathBuf::from(dir).join("user-dirs.dirs"),
                 None => home.join(".config/user-dirs.dirs"),
             },
         };
 
-        let entries = DirsFile::new(&filepath).entries()?;
+        if !filepath_dirsfile.exists() {
+            return Ok(Self { home, vars });
+        }
+
+        let entries = DirsFile::new(&filepath_dirsfile).entries()?;
         for entry in &entries {
             let value = match entry.value.strip_prefix("$HOME/") {
                 Some(v) => format!("{h}/{v}"),
@@ -54,7 +59,6 @@ impl Dirs {
             };
             vars.insert(entry.name.clone(), value);
         }
-
         Ok(Self { home, vars })
     }
 
