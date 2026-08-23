@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 
 use crate::error::*;
 
+#[derive(Debug)]
 pub(crate) struct DirsEntry {
     pub(crate) name: String,
     pub(crate) value: String,
@@ -28,6 +29,7 @@ impl DirsEntry {
     }
 }
 
+#[derive(Debug)]
 pub(crate) struct DirsFile {
     path: PathBuf,
 }
@@ -41,7 +43,7 @@ impl DirsFile {
     pub(crate) fn entries(&self) -> Result<Vec<DirsEntry>> {
         let content = match fs::read_to_string(&self.path) {
             Ok(v) => v,
-            Err(_) => return Ok(vec![]),
+            Err(e) => return Err(Error::StdIoError(e)),
         };
 
         let mut entries = vec![];
@@ -57,6 +59,7 @@ impl DirsFile {
                 })?,
             );
         }
+
         Ok(entries)
     }
 }

@@ -4,17 +4,39 @@ use std::path::{Path, PathBuf};
 
 use crate::{DirsFile, error::*};
 
+#[derive(Debug)]
 pub struct Dirs {
     home: PathBuf,
     vars: HashMap<String, String>,
 }
 
 impl Dirs {
-    pub fn from_file<P: AsRef<Path>>(filepath: Option<P>) -> Result<Self> {
+    pub fn new() -> Result<Self> {
+        Self::from_file_imp::<PathBuf>(None)
+    }
+
+    pub fn from_file<P: AsRef<Path>>(filepath: P) -> Result<Self> {
+        Self::from_file_imp(Some(filepath))
+    }
+
+    fn from_file_imp<P: AsRef<Path>>(filepath: Option<P>) -> Result<Self> {
         let home = match env::home_dir() {
             Some(dir) => dir,
             None => return Err(Error::NoHome),
         };
+
+        let h = home.to_string_lossy().to_string();
+        let mut vars = HashMap::from([
+            ("XDG_DESKTOP_DIR".to_string(), format!("{h}/Desktop")),
+            ("XDG_DOCUMENTS_DIR".to_string(), format!("{h}/Documents")),
+            ("XDG_DOWNLOAD_DIR".to_string(), format!("{h}/Downloads")),
+            ("XDG_MUSIC_DIR".to_string(), format!("{h}/Music")),
+            ("XDG_PICTURES_DIR".to_string(), format!("{h}/Pictures")),
+            ("XDG_PROJECTS_DIR".to_string(), format!("{h}/Projects")),
+            ("XDG_PUBLICSHARE_DIR".to_string(), format!("{h}/Public")),
+            ("XDG_TEMPLATES_DIR".to_string(), format!("{h}/Templates")),
+            ("XDG_VIDEOS_DIR".to_string(), format!("{h}/Videos")),
+        ]);
 
         let filepath = match filepath {
             Some(filepath) => filepath.as_ref().into(),
@@ -24,16 +46,13 @@ impl Dirs {
             },
         };
 
-        let mut vars = HashMap::new();
-        let h = home.to_string_lossy().to_string();
-
         let entries = DirsFile::new(&filepath).entries()?;
-        for entry in entries {
+        for entry in &entries {
             let value = match entry.value.strip_prefix("$HOME/") {
                 Some(v) => format!("{h}/{v}"),
-                None => entry.value,
+                None => entry.value.clone(),
             };
-            vars.insert(entry.name, value);
+            vars.insert(entry.name.clone(), value);
         }
 
         Ok(Self { home, vars })
