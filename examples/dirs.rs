@@ -1,3 +1,4 @@
+#[rustfmt::skip]
 fn main() {
     let dirs = xdg_user_dirs::new().unwrap();
 

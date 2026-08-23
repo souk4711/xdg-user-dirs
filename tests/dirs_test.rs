@@ -14,7 +14,7 @@ mod dirs_test {
     fn test_from_file() {
         let dirs = Dirs::from_file(concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/tests/fixtures/user-dirs.dirs.defaults"
+            "/tests/fixtures/user-dirs.dirs"
         ));
         assert!(dirs.is_ok());
 
@@ -22,7 +22,7 @@ mod dirs_test {
         let dirs = dirs.unwrap();
         assert_eq!(dirs.desktop(), format!("{home}/Desktop"));
         assert_eq!(dirs.documents(), format!("{home}/Documents"));
-        assert_eq!(dirs.download(), format!("{home}/Downloads"));
+        assert_eq!(dirs.download(), format!("{home}/Internet"));
         assert_eq!(dirs.music(), format!("{home}/Music"));
         assert_eq!(dirs.pictures(), format!("{home}/Pictures"));
         assert_eq!(dirs.projects(), format!("{home}/Projects"));
@@ -80,5 +80,21 @@ mod dirs_test {
             "/tests/fixtures/user-dirs.dirs.filenotexist"
         ));
         assert!(dirs.is_ok());
+    }
+
+    #[test]
+    fn test_get() {
+        let dirs = Dirs::from_file(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tests/fixtures/user-dirs.dirs"
+        ));
+        assert!(dirs.is_ok());
+
+        let home = env::home_dir().unwrap().to_string_lossy().to_string();
+        let dirs = dirs.unwrap();
+        assert_eq!(dirs.get("DESKTOP"), format!("{home}/Desktop"));
+        assert_eq!(dirs.get("DOWNLOAD"), format!("{home}/Internet"));
+        assert_eq!(dirs.get("CUSTOM"), format!("{home}/Custom"));
+        assert_eq!(dirs.get("NONAME"), format!("{home}"));
     }
 }
