@@ -1,6 +1,6 @@
 [package]
 name = "xdg-user-dirs"
-version = "0.0.1"
+version = "1.0.0"
 description = "A library that looks up the current path for one of the XDG user directories."
 keywords = ["linux", "xdg", "path"]
 categories = ["filesystem"]
