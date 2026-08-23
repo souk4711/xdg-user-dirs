@@ -6,3 +6,7 @@ use dirsfile::DirsFile;
 
 pub use dirs::Dirs;
 pub use error::{Error, Result};
+
+pub fn new() -> Result<Dirs> {
+    Dirs::new()
+}

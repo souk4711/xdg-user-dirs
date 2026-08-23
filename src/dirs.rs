@@ -63,42 +63,42 @@ impl Dirs {
     }
 
     pub fn desktop(&self) -> PathBuf {
-        self.dir("DESKTOP")
+        self.get("DESKTOP")
     }
 
     pub fn documents(&self) -> PathBuf {
-        self.dir("DOCUMENTS")
+        self.get("DOCUMENTS")
     }
 
     pub fn downloads(&self) -> PathBuf {
-        self.dir("DOWNLOAD")
+        self.get("DOWNLOAD")
     }
 
     pub fn music(&self) -> PathBuf {
-        self.dir("MUSIC")
+        self.get("MUSIC")
     }
 
     pub fn pictures(&self) -> PathBuf {
-        self.dir("PICTURES")
+        self.get("PICTURES")
     }
 
     pub fn projects(&self) -> PathBuf {
-        self.dir("PROJECTS")
+        self.get("PROJECTS")
     }
 
     pub fn publicshare(&self) -> PathBuf {
-        self.dir("PUBLICSHARE")
+        self.get("PUBLICSHARE")
     }
 
     pub fn templates(&self) -> PathBuf {
-        self.dir("TEMPLATES")
+        self.get("TEMPLATES")
     }
 
     pub fn videos(&self) -> PathBuf {
-        self.dir("VIDEOS")
+        self.get("VIDEOS")
     }
 
-    pub fn dir(&self, dirname: &str) -> PathBuf {
+    pub fn get(&self, dirname: &str) -> PathBuf {
         let name = format!("XDG_{dirname}_DIR");
         match self.vars.get(&name) {
             Some(v) => v.to_string().into(),
