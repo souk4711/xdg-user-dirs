@@ -1,13 +1,22 @@
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(thiserror::Error, Debug)]
+#[derive(Debug)]
 pub enum Error {
-    #[error(transparent)]
-    StdIoError(#[from] std::io::Error),
-    #[error("parse line `{line}..` failed: {errmsg}")]
-    InvalidLine { line: String, errmsg: String },
-    #[error("not enough parts")]
+    StdIoError(std::io::Error),
+    InvalidLine(String, String),
     NotEnoughParts,
-    #[error("$HOME is not set")]
     NoHome,
+}
+
+impl std::error::Error for Error {}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::StdIoError(e) => std::fmt::Display::fmt(e, f),
+            Self::InvalidLine(line, errmsg) => write!(f, "parse line `{line}..` failed: {errmsg}"),
+            Self::NotEnoughParts => write!(f, "not enough parts"),
+            Self::NoHome => write!(f, "$HOME is not set"),
+        }
+    }
 }

@@ -52,12 +52,9 @@ impl DirsFile {
             if line.is_empty() || line.starts_with("#") {
                 continue;
             }
-            entries.push(
-                DirsEntry::from_line(line).map_err(|err| Error::InvalidLine {
-                    line: line[..cmp::min(line.len(), 8)].to_string(),
-                    errmsg: err.to_string(),
-                })?,
-            );
+            entries.push(DirsEntry::from_line(line).map_err(|err| {
+                Error::InvalidLine(line[..cmp::min(line.len(), 8)].to_string(), err.to_string())
+            })?);
         }
 
         Ok(entries)

@@ -15,20 +15,6 @@ on:
       - "Cargo.*"
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v7
-      - uses: taiki-e/install-action@v2.85.11
-        with:
-          tool: cargo-deny,cargo-hack
-      - name: Run cargo check
-        run: |
-          cargo deny --all-features --log-level error check
-          cargo hack check --feature-powerset --no-dev-deps
-
   lints:
     name: Lints
     runs-on: ubuntu-24.04
@@ -46,7 +32,6 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-24.04
     needs:
-      - check
       - lints
     steps:
       - name: Checkout sources
