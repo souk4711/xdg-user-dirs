@@ -70,7 +70,7 @@ impl Dirs {
         self.get("DOCUMENTS")
     }
 
-    pub fn downloads(&self) -> PathBuf {
+    pub fn download(&self) -> PathBuf {
         self.get("DOWNLOAD")
     }
 

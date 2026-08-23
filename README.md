@@ -10,7 +10,7 @@ fn main() {
 
   println!("    XDG_DESKTOP_DIR: {:?}", dirs.desktop());      // home/johndoe/Desktop
   println!("  XDG_DOCUMENTS_DIR: {:?}", dirs.documents());    // home/johndoe/Documents
-  println!("   XDG_DOWNLOAD_DIR: {:?}", dirs.downloads());    // home/johndoe/Downloads
+  println!("   XDG_DOWNLOAD_DIR: {:?}", dirs.download());     // home/johndoe/Downloads
   println!("      XDG_MUSIC_DIR: {:?}", dirs.music());        // home/johndoe/Music
   println!("   XDG_PICTURES_DIR: {:?}", dirs.pictures());     // home/johndoe/Pictures
   println!("   XDG_PROJECTS_DIR: {:?}", dirs.projects());     // home/johndoe/Projects

@@ -22,7 +22,7 @@ mod dirs_test {
         let dirs = dirs.unwrap();
         assert_eq!(dirs.desktop(), format!("{home}/Desktop"));
         assert_eq!(dirs.documents(), format!("{home}/Documents"));
-        assert_eq!(dirs.downloads(), format!("{home}/Downloads"));
+        assert_eq!(dirs.download(), format!("{home}/Downloads"));
         assert_eq!(dirs.music(), format!("{home}/Music"));
         assert_eq!(dirs.pictures(), format!("{home}/Pictures"));
         assert_eq!(dirs.projects(), format!("{home}/Projects"));
@@ -43,7 +43,7 @@ mod dirs_test {
         let dirs = dirs.unwrap();
         assert_eq!(dirs.desktop(), format!("{home}/Desktop"));
         assert_eq!(dirs.documents(), format!("{home}/Documents"));
-        assert_eq!(dirs.downloads(), format!("{home}/Downloads"));
+        assert_eq!(dirs.download(), format!("{home}/Downloads"));
         assert_eq!(dirs.music(), format!("{home}/Music"));
         assert_eq!(dirs.pictures(), format!("{home}/Pictures"));
         assert_eq!(dirs.projects(), format!("{home}/Projects"));
@@ -64,7 +64,7 @@ mod dirs_test {
         let dirs = dirs.unwrap();
         assert_eq!(dirs.desktop(), format!("{home}/桌面"));
         assert_eq!(dirs.documents(), format!("{home}/文件"));
-        assert_eq!(dirs.downloads(), format!("{home}/下載"));
+        assert_eq!(dirs.download(), format!("{home}/下載"));
         assert_eq!(dirs.music(), format!("{home}/音樂"));
         assert_eq!(dirs.pictures(), format!("{home}/圖片"));
         assert_eq!(dirs.projects(), format!("{home}/專案"));
