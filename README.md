@@ -5,20 +5,23 @@ A library that looks up the current path for one of the XDG user directories.
 ## Usage
 
 ```rust
-let dirs = xdg_user_dirs::new()?;
+fn main() {
+  let dirs = xdg_user_dirs::new().unwrap();
 
-dirs.desktop()      # $HOME/Desktop
-dirs.documents()    # $HOME/Documents
-dirs.downloads()    # $HOME/Downloads
-dirs.music()        # $HOME/Music
-dirs.pictures()     # $HOME/Pictures
-dirs.projects()     # $HOME/Projects
-dirs.publicshare()  # $HOME/Public
-dirs.templates()    # $HOME/Templates
-dirs.videos()       # $HOME/Videos
+  println!("    XDG_DESKTOP_DIR: {:?}", dirs.desktop());      // home/johndoe/Desktop
+  println!("  XDG_DOCUMENTS_DIR: {:?}", dirs.documents());    // home/johndoe/Documents
+  println!("   XDG_DOWNLOAD_DIR: {:?}", dirs.downloads());    // home/johndoe/Downloads
+  println!("      XDG_MUSIC_DIR: {:?}", dirs.music());        // home/johndoe/Music
+  println!("   XDG_PICTURES_DIR: {:?}", dirs.pictures());     // home/johndoe/Pictures
+  println!("   XDG_PROJECTS_DIR: {:?}", dirs.projects());     // home/johndoe/Projects
+  println!("XDG_PUBLICSHARE_DIR: {:?}", dirs.publicshare());  // home/johndoe/Public
+  println!("  XDG_TEMPLATES_DIR: {:?}", dirs.templates());    // home/johndoe/Templates
+  println!("     XDG_VIDEOS_DIR: {:?}", dirs.videos());       // /home/johndoe/Videos
 
-dirs.get("CUSTOM")  # $HOME/Custom if set
-dirs.get("CUSTOM")  # $HOME if unset
+  // home/johndoe/Custom if set
+  // home/johndoe if unset
+  println!("     XDG_CUSTOM_DIR: {:?}", dirs.get("CUSTOM"));
+}
 ```
 
 ## License
